@@ -9,6 +9,8 @@ import java.util.Scanner;
 public class ReservationMain {
 
 	public static void printMenu() {
+
+		System.out.println();
 		System.out.println("=============================");
 		System.out.println("OO 호텔 예약 시스템");
 		System.out.println("OO Hotel Reservation System");
@@ -18,6 +20,8 @@ public class ReservationMain {
 		System.out.println("3. 룸 예약 현황");
 		System.out.println("4. 금고 확인");
 		System.out.println("5. 프로그램 종료");
+		System.out.println("-----------------------------");
+		System.out.print("메뉴 입력 : ");
 
 	}
 
@@ -28,17 +32,15 @@ public class ReservationMain {
 				map1.put((i * 100) + j, false);
 			}
 		}
-		
+
 	}
 
 	public static void main(String[] args) {
-		ArrayList<Guest>arr= new ArrayList<Guest>();
+		ArrayList<Guest> arr = new ArrayList<Guest>();
 		HashMap<Integer, Boolean> map1 = new HashMap<Integer, Boolean>();
 		HashMap<Integer, Guest> map2 = new HashMap<Integer, Guest>();
 
 		Scanner sc = new Scanner(System.in);
-		
-
 
 		int hotelmoney = 100000;
 		roomSet(map1, map2);
@@ -47,18 +49,57 @@ public class ReservationMain {
 		while (true) {
 
 			printMenu();
+
 			int user = sc.nextInt();
 			sc.nextLine();
 
 			switch (user) {
 			case 1:
 				arr.add(new Guest());
-				arr.get(count).roomReservation(sc, hotelmoney, map1);
-				
-				
-				
+				hotelmoney = arr.get(count).roomReservation(sc, hotelmoney, map1);
+
 				break;
 			case 2:
+				System.out.print("고객명을 입력하세요 : ");
+				String guest = sc.nextLine();
+				boolean ch = false;
+				int room_n = 0;
+
+				for (int i = 0; i < arr.size(); i++) {
+					if (arr.get(i).name.equals(guest)) {
+						ch = true;
+						System.out.println();
+						System.out.println("검색하신 고객님의 정보 입니다.");
+						arr.get(i).getInfo();
+						room_n = i;
+					}
+				}
+				if (ch == false) {
+					System.out.println("해당 고객명으로 예약한 방이 없습니다.");
+					continue;
+				}
+
+				System.out.println();
+				System.out.println("-----------------------------");
+				System.out.println("1. 예약 취소");
+				System.out.println("2. 예약 연장");
+				System.out.println("3. 이전 메뉴");
+				System.out.println("-----------------------------");
+				System.out.print("메뉴 입력 : ");
+				int user2 = sc.nextInt();
+
+				switch (user2) {
+				case 1:
+					arr.get(room_n).roomCancle(sc, hotelmoney, map1);
+					break;
+				case 2:
+					hotelmoney=arr.get(room_n).roomReservationChange(sc, hotelmoney);
+					break;
+				case 3:
+					System.out.println("이전 메뉴로 돌아갑니다.");
+					break;
+				}
+
 				break;
 			case 3:
 				break;

@@ -15,6 +15,19 @@ public class Guest {
 	int month;
 	int date;
 
+	public Guest() {
+		room = 0;
+		name = "무명";
+		gender = 0;
+		age = 0;
+		people = 0;
+		day = 0;
+		money = 0;
+		year = 0;
+		month = 0;
+		date = 0;
+	}
+
 	public void guestSet(Scanner sc) {
 		System.out.println();
 		System.out.print("고객 성함 : ");
@@ -66,9 +79,7 @@ public class Guest {
 				}
 			}
 
-		} else {
-			System.out.println("엥");
-		}
+		} 
 	}
 
 	public int roomReservation(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1) {
@@ -112,7 +123,7 @@ public class Guest {
 		System.out.println("고객 나이 : " + age + "세");
 		System.out.println("예약 룸 넘버 : " + room + "호");
 		System.out.println("숙박 인원 : " + people + "명");
-		System.out.println("숙박 일수 : " + day + "박 " + day + 1 + "일");
+		System.out.println("숙박 일수 : " + day + "박 " + (day + 1) + "일");
 		System.out.println("체크인 : " + year + "년 " + month + "월 " + date + "일");
 		System.out.println("체크아웃 : " + year + "년 " + month + "월 " + (date + day) + "일");
 
@@ -126,7 +137,7 @@ public class Guest {
 			Thread.sleep(1500);
 			System.out.println("취소수수료가 10% 부과되어 환불됩니다.");
 			Thread.sleep(1500);
-			System.out.println("환불 금액은 " + (int)(money * 0.9) + "원 입니다.");
+			System.out.println("환불 금액은 " + (int) (money * 0.9) + "원 입니다.");
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();

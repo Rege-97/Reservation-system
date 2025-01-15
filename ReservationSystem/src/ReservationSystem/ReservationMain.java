@@ -46,6 +46,7 @@ public class ReservationMain {
 				System.out.println("검색하신 고객님의 정보 입니다.");
 				arr.get(i).getInfo();
 				room_n = i;
+				break;
 			} else {
 				room_n = -1;
 			}

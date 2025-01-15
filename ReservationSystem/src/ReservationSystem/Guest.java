@@ -1,5 +1,6 @@
 package ReservationSystem;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Guest {
@@ -14,6 +15,7 @@ public class Guest {
 	int year;
 	int month;
 	int date;
+	String money_s;
 
 	public Guest() {
 		room = 0;
@@ -26,6 +28,7 @@ public class Guest {
 		year = 0;
 		month = 0;
 		date = 0;
+		money_s="";
 	}
 
 	public void guestSet(Scanner sc) {
@@ -82,7 +85,7 @@ public class Guest {
 		} 
 	}
 
-	public int roomReservation(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1) {
+	public int roomReservation(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1,DecimalFormat format) {
 		Calendar now = Calendar.getInstance();
 		year = now.get(Calendar.YEAR);
 		month = now.get(Calendar.MONTH + 1);
@@ -101,8 +104,11 @@ public class Guest {
 		}
 
 		money = 55000 * day;
+		money_s=format.format(money);
+
+		
 		System.out.println();
-		System.out.println(day + "박 결제 비용은 " + money + "원 입니다.");
+		System.out.println(day + "박 결제 비용은 " + money_s + "원 입니다.");
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
@@ -129,15 +135,17 @@ public class Guest {
 
 	}
 
-	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1) {
+	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1,DecimalFormat format) {
 
 		try {
+			
+			money_s=format.format(money*0.9);
 			System.out.println();
 			System.out.println(name + " 고객님의 예약취소를 도와드리겠습니다.");
 			Thread.sleep(1500);
 			System.out.println("취소수수료가 10% 부과되어 환불됩니다.");
 			Thread.sleep(1500);
-			System.out.println("환불 금액은 " + (int) (money * 0.9) + "원 입니다.");
+			System.out.println("환불 금액은 " + money_s + "원 입니다.");
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -163,7 +171,7 @@ public class Guest {
 		return hotelmoney;
 	}
 
-	public int roomReservationChange(Scanner sc, int hotelmoney) {
+	public int roomReservationChange(Scanner sc, int hotelmoney,DecimalFormat format) {
 		System.out.println();
 		System.out.println("고객님의 예약 정보 입니다.");
 		System.out.println();
@@ -172,13 +180,15 @@ public class Guest {
 		System.out.println("체크인 : " + year + "년 " + month + "월 " + date + "일");
 		System.out.println("체크아웃 : " + year + "년 " + month + "월 " + (date + day) + "일");
 
+		System.out.println();
 		System.out.print("몇 박을 연장하시겠습니까? : ");
 		int day_c = sc.nextInt();
 		int money_c = 55000 * day_c;
 		day += day_c;
+		money_s=format.format(money_c);
 
 		System.out.println();
-		System.out.println(day_c + "박 추가 결제 비용은 " + money_c + "원 입니다.");
+		System.out.println(day_c + "박 추가 결제 비용은 " + money_s + "원 입니다.");
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {

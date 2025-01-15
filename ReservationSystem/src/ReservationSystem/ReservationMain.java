@@ -72,6 +72,7 @@ public class ReservationMain {
 			switch (user2) {
 			case 1:
 				hotelmoney = arr.get(room_n).roomCancle(sc, hotelmoney, map1, format);
+
 				break;
 			case 2:
 				hotelmoney = arr.get(room_n).roomReservationChange(sc, hotelmoney, format);
@@ -146,6 +147,7 @@ public class ReservationMain {
 
 	public static void main(String[] args) {
 		ArrayList<Guest> arr = new ArrayList<Guest>();
+		ArrayList<ReservationDay> arr2 = new ArrayList<ReservationDay>();
 		HashMap<Integer, Boolean> map1 = new HashMap<Integer, Boolean>();
 		DecimalFormat format = new DecimalFormat("#,###");
 
@@ -165,7 +167,7 @@ public class ReservationMain {
 
 			switch (user) {
 			case 1:
-				arr.add(new Guest());
+
 				System.out.println();
 				System.out.println("-----------------------------");
 				System.out.println("1. 오늘 예약");
@@ -178,16 +180,18 @@ public class ReservationMain {
 
 				switch (user_a) {
 				case 1:
+					arr.add(new Guest());
 					System.out.println();
 					System.out.println("*오늘 예약*");
-					hotelmoney = arr.get(count).roomReservation_now(sc, hotelmoney, map1, format);
+					hotelmoney = arr.get(count).roomReservation_now(sc, hotelmoney, map1, format,arr2,count);
 					visit++;
 					count++;
 					break;
 				case 2:
+					arr.add(new Guest());
 					System.out.println();
 					System.out.println("*예약일 지정*");
-					hotelmoney = arr.get(count).roomReservation_later(sc, hotelmoney, map1, format);
+					hotelmoney = arr.get(count).roomReservation_later(sc, hotelmoney, map1, format,arr2,count);
 					visit++;
 					count++;
 					break;

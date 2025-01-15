@@ -103,6 +103,7 @@ public class ReservationMain {
 			key.add(keys.next());
 		}
 
+		System.out.println("==================================");
 		for (int i = 0; i < key.size(); i++) {
 			for (int j = 0; j < arr.size(); j++) {
 				if (arr.get(j).room == key.get(i)) {
@@ -110,9 +111,12 @@ public class ReservationMain {
 					break;
 				}
 			}
-
+			System.out.println();
+			System.out.println("***" + key.get(i) + "호실***");
+			System.out.println("-----------------------------");
 			if (map1.get(key.get(i))) {
-				System.out.println(key.get(i) + "호실 - 예약중");
+				System.out.println();
+				System.out.println("- 현재 이용 중");
 				System.out.println();
 				System.out.println("고객명 : " + arr.get(g).name);
 				System.out.println("체크인 : " + arr.get(g).year + "년 " + arr.get(g).month + "월 " + arr.get(g).date + "일");
@@ -120,9 +124,23 @@ public class ReservationMain {
 						+ (arr.get(g).date + arr.get(g).day) + "일");
 				System.out.println("-----------------------------");
 			} else {
-				System.out.println(key.get(i) + "호실 - 빈방");
-				System.out.println("-----------------");
+				System.out.println("- 현재 빈방");
 			}
+
+			for (int k = 0; k < arr.size(); k++) {
+				if (arr.get(k).room == key.get(i) && !(arr.get(k).today)) {
+					System.out.println();
+					System.out.println("- 예약자");
+					System.out.println();
+					System.out.println("고객명 : " + arr.get(k).name);
+					System.out.println(
+							"체크인 : " + arr.get(k).year + "년 " + arr.get(k).month + "월 " + arr.get(k).date + "일");
+					System.out.println("체크아웃: " + arr.get(k).year + "년 " + arr.get(k).month + "월 "
+							+ (arr.get(k).date + arr.get(k).day) + "일");
+					System.out.println("-----------------------------");
+				}
+			}
+			System.out.println("==================================");
 		}
 	}
 
@@ -155,9 +173,9 @@ public class ReservationMain {
 				System.out.println("3. 이전 메뉴");
 				System.out.println("-----------------------------");
 				System.out.print("메뉴 입력 : ");
-				int user_a=sc.nextInt();
+				int user_a = sc.nextInt();
 				sc.nextLine();
-				
+
 				switch (user_a) {
 				case 1:
 					System.out.println();
@@ -181,7 +199,6 @@ public class ReservationMain {
 					System.out.println();
 					System.out.println("잘못 입력하였습니다.");
 				}
-				
 
 				break;
 			case 2:

@@ -36,6 +36,7 @@ public class ReservationMain {
 	}
 
 	public static int search(Scanner sc, ArrayList<Guest> arr, int hotelmoney, HashMap<Integer, Boolean> map1) {
+		System.out.println();
 		System.out.print("고객명을 입력하세요 : ");
 		String guest = sc.nextLine();
 		int room_n = 0;
@@ -67,18 +68,23 @@ public class ReservationMain {
 		System.out.print("메뉴 입력 : ");
 		int user2 = sc.nextInt();
 
-		switch (user2) {
-		case 1:
-			hotelmoney = arr.get(room_n).roomCancle(sc, hotelmoney, map1, format);
-			break;
-		case 2:
-			hotelmoney = arr.get(room_n).roomReservationChange(sc, hotelmoney, format);
-			break;
-		case 3:
-			System.out.println("이전 메뉴로 돌아갑니다.");
-			break;
-		default:
-			System.out.println("잘못 입력하였습니다.");
+		try {
+			switch (user2) {
+			case 1:
+				hotelmoney = arr.get(room_n).roomCancle(sc, hotelmoney, map1, format);
+				break;
+			case 2:
+				hotelmoney = arr.get(room_n).roomReservationChange(sc, hotelmoney, format);
+				break;
+			case 3:
+				System.out.println("이전 메뉴로 돌아갑니다.");
+				break;
+			default:
+				System.out.println("잘못 입력하였습니다.");
+			}
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println();
+			System.out.println("예약한 고객이 없습니다.");
 		}
 
 		return hotelmoney;
@@ -142,8 +148,40 @@ public class ReservationMain {
 			switch (user) {
 			case 1:
 				arr.add(new Guest());
-				hotelmoney = arr.get(count).roomReservation(sc, hotelmoney, map1, format);
-				visit++;
+				System.out.println();
+				System.out.println("-----------------------------");
+				System.out.println("1. 오늘 예약");
+				System.out.println("2. 예약일 지정");
+				System.out.println("3. 이전 메뉴");
+				System.out.println("-----------------------------");
+				System.out.print("메뉴 입력 : ");
+				int user_a=sc.nextInt();
+				sc.nextLine();
+				
+				switch (user_a) {
+				case 1:
+					System.out.println();
+					System.out.println("*오늘 예약*");
+					hotelmoney = arr.get(count).roomReservation_now(sc, hotelmoney, map1, format);
+					visit++;
+					count++;
+					break;
+				case 2:
+					System.out.println();
+					System.out.println("*예약일 지정*");
+					hotelmoney = arr.get(count).roomReservation_later(sc, hotelmoney, map1, format);
+					visit++;
+					count++;
+					break;
+				case 3:
+					System.out.println();
+					System.out.println("이전 메뉴로 돌아갑니다.");
+					break;
+				default:
+					System.out.println();
+					System.out.println("잘못 입력하였습니다.");
+				}
+				
 
 				break;
 			case 2:
@@ -176,7 +214,7 @@ public class ReservationMain {
 				System.out.println();
 				System.out.println("현재 이용 고객 수 : " + count_room + "명");
 				System.out.println("누적 방문 고객 수 : " + visit + "명");
-				System.out.println("누적 매출액 : " + format.format(hotelmoney - 100000)+"원");
+				System.out.println("누적 매출액 : " + format.format(hotelmoney - 100000) + "원");
 				System.out.println("현재 금고 잔액 : " + hotelmoney_s + "원");
 
 				break;
@@ -185,6 +223,9 @@ public class ReservationMain {
 				System.out.println("프로그램을 종료합니다.");
 				System.exit(0);
 				break;
+			default:
+				System.out.println();
+				System.out.println("잘못 입력하였습니다.");
 			}
 
 		}

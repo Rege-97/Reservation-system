@@ -2,6 +2,7 @@ package ReservationSystem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -58,7 +59,7 @@ public class ReservationMain {
 	}
 
 	public static int change(Scanner sc, ArrayList<Guest> arr, int hotelmoney, HashMap<Integer, Boolean> map1,
-			int room_n, DecimalFormat format) {
+			int room_n, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 		System.out.println();
 		System.out.println("-----------------------------");
 		System.out.println("1. 예약 취소");
@@ -71,7 +72,7 @@ public class ReservationMain {
 		try {
 			switch (user2) {
 			case 1:
-				hotelmoney = arr.get(room_n).roomCancle(sc, hotelmoney, map1, format);
+				hotelmoney = arr.get(room_n).roomCancle(sc, hotelmoney, map1, format, arr2);
 
 				break;
 			case 2:
@@ -91,58 +92,68 @@ public class ReservationMain {
 		return hotelmoney;
 	}
 
-	public static void getRoomInfo(HashMap<Integer, Boolean> map1, ArrayList<Guest> arr) {
+	public static void getRoomInfo(HashMap<Integer, Boolean> map1, ArrayList<Guest> arr,
+			ArrayList<ReservationDay> arr2) {
 		System.out.println();
 		System.out.println("호텔 룸 예약 현황");
 		System.out.println();
 		System.out.println("-----------------------------");
 		Iterator<Integer> keys = map1.keySet().iterator();
 		ArrayList<Integer> key = new ArrayList<Integer>();
-		int g = 0;
+		Calendar now = Calendar.getInstance();
+		int year = now.get(Calendar.YEAR);
+		int month = now.get(Calendar.MONTH - 2);
+		int date = now.get(Calendar.DATE);
+		String today = year + "" + (month >= 10 ? month : "0" + month) + "" + date;
+		boolean check = false;
 
 		while (keys.hasNext()) {
 			key.add(keys.next());
 		}
 
-		System.out.println("==================================");
 		for (int i = 0; i < key.size(); i++) {
+			System.out.println();
+			System.out.println("***" + key.get(i) + "호실***");
+			System.out.println("--------------------------------");
+
 			for (int j = 0; j < arr.size(); j++) {
-				if (arr.get(j).room == key.get(i)) {
-					g = j;
+				check = false;
+				if (arr.get(j).reser.equals(today) && arr.get(j).room == key.get(i)) {
+					System.out.println("- 현재 이용 중");
+					System.out.println();
+					System.out.println("고객 성함 : " + arr.get(j).name);
+					System.out.println("숙박 인원 : " + arr.get(j).people + "명");
+					System.out.println(
+							"체크인 : " + arr.get(j).year + "년 " + arr.get(j).month + "월 " + arr.get(j).date + "일");
+					System.out.println("체크아웃 : " + arr.get(j).year + "년 " + arr.get(j).month + "월 "
+							+ (arr.get(j).date + arr.get(j).day) + "일");
+					System.out.println();
+					check = true;
 					break;
 				}
 			}
-			System.out.println();
-			System.out.println("***" + key.get(i) + "호실***");
-			System.out.println("-----------------------------");
-			if (map1.get(key.get(i))) {
-				System.out.println();
-				System.out.println("- 현재 이용 중");
-				System.out.println();
-				System.out.println("고객명 : " + arr.get(g).name);
-				System.out.println("체크인 : " + arr.get(g).year + "년 " + arr.get(g).month + "월 " + arr.get(g).date + "일");
-				System.out.println("체크아웃: " + arr.get(g).year + "년 " + arr.get(g).month + "월 "
-						+ (arr.get(g).date + arr.get(g).day) + "일");
-				System.out.println("-----------------------------");
-			} else {
+			
+			if(!check) {
 				System.out.println("- 현재 빈방");
+				System.out.println();
 			}
 
-			for (int k = 0; k < arr.size(); k++) {
-				if (arr.get(k).room == key.get(i) && !(arr.get(k).today)) {
-					System.out.println();
+			for (int j = 0; j < arr.size(); j++) {
+				if (!(arr.get(j).reser.equals(today)) && arr.get(j).room == key.get(i)) {
 					System.out.println("- 예약자");
 					System.out.println();
-					System.out.println("고객명 : " + arr.get(k).name);
+					System.out.println("고객 성함 : " + arr.get(j).name);
+					System.out.println("숙박 인원 : " + arr.get(j).people + "명");
 					System.out.println(
-							"체크인 : " + arr.get(k).year + "년 " + arr.get(k).month + "월 " + arr.get(k).date + "일");
-					System.out.println("체크아웃: " + arr.get(k).year + "년 " + arr.get(k).month + "월 "
-							+ (arr.get(k).date + arr.get(k).day) + "일");
-					System.out.println("-----------------------------");
+							"체크인 : " + arr.get(j).year + "년 " + arr.get(j).month + "월 " + arr.get(j).date + "일");
+					System.out.println("체크아웃 : " + arr.get(j).year + "년 " + arr.get(j).month + "월 "
+							+ (arr.get(j).date + arr.get(j).day) + "일");
+					System.out.println();
 				}
 			}
-			System.out.println("==================================");
+
 		}
+
 	}
 
 	public static void main(String[] args) {
@@ -183,7 +194,7 @@ public class ReservationMain {
 					arr.add(new Guest());
 					System.out.println();
 					System.out.println("*오늘 예약*");
-					hotelmoney = arr.get(count).roomReservation_now(sc, hotelmoney, map1, format,arr2,count);
+					hotelmoney = arr.get(count).roomReservation_now(sc, hotelmoney, map1, format, arr2, count);
 					visit++;
 					count++;
 					break;
@@ -191,7 +202,7 @@ public class ReservationMain {
 					arr.add(new Guest());
 					System.out.println();
 					System.out.println("*예약일 지정*");
-					hotelmoney = arr.get(count).roomReservation_later(sc, hotelmoney, map1, format,arr2,count);
+					hotelmoney = arr.get(count).roomReservation_later(sc, hotelmoney, map1, format, arr2, count);
 					visit++;
 					count++;
 					break;
@@ -213,21 +224,32 @@ public class ReservationMain {
 					continue;
 				}
 
-				hotelmoney = change(sc, arr, hotelmoney, map1, room_n, format);
+				hotelmoney = change(sc, arr, hotelmoney, map1, room_n, format, arr2);
 
 				break;
 			case 3:
-				getRoomInfo(map1, arr);
+				getRoomInfo(map1, arr, arr2);
 
 				break;
 			case 4:
 				int count_room = 0;
-				for (int i = 101; i <= 303; i++) {
-					if (map1.get(i) == true) {
-						count_room++;
-					}
-					if (i % 100 == 3) {
-						i += 98;
+				Calendar now = Calendar.getInstance();
+				int year = now.get(Calendar.YEAR);
+				int month = now.get(Calendar.MONTH - 2);
+				int date = now.get(Calendar.DATE);
+				String today = year + "" + (month >= 10 ? month : "0" + month) + "" + date;
+
+				for (int i = 0; i < arr2.size(); i++) {
+					if (arr2.get(i).date.equals(today)) {
+						for (int j = 101; j <= 303; j++) {
+							if (arr2.get(i).map.get(j)) {
+								count_room++;
+							}
+							if (j % 100 == 3) {
+								j += 97;
+							}
+						}
+						break;
 					}
 				}
 

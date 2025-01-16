@@ -282,10 +282,9 @@ public class Guest {
 
 	}
 
-	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format) {
+	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,ArrayList<ReservationDay> arr2) {
 
 		try {
-
 			money_s = format.format(money * 0.9);
 			System.out.println();
 			System.out.println(name + " 고객님의 예약취소를 도와드리겠습니다.");
@@ -295,7 +294,6 @@ public class Guest {
 			System.out.println("환불 금액은 " + money_s + "원 입니다.");
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 		System.out.println();
 		System.out.println("취소하시겠습니까?");
@@ -304,8 +302,15 @@ public class Guest {
 		if (ny.charAt(0) == 'Y' || ny.charAt(0) == 'y') {
 			hotelmoney -= (int) (money * 0.9);
 			name = "";
-			today = false;
-			map1.put(room, false);
+			
+			for (int i = 0; i < arr2.size(); i++) {
+				if (arr2.get(i).date.equals(reser)) {
+					arr2.get(i).map.put(room, false);
+					}
+					break;
+				}
+
+			room=0;
 			System.out.println();
 			System.out.println(room + "호실의 예약 취소가 완료되었습니다.");
 			System.out.println("감사합니다.");
@@ -340,7 +345,6 @@ public class Guest {
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 		System.out.println();
 		System.out.println("결제되었습니다. 감사합니다.");
@@ -348,7 +352,6 @@ public class Guest {
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 
 		System.out.println();

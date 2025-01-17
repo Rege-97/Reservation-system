@@ -1,6 +1,7 @@
 package ReservationSystem;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Guest {
@@ -17,7 +18,15 @@ public class Guest {
 	int date;
 	String money_s;
 	String reser;
+	String reser_e;
+	String format_s;
+	String format_e;
 	boolean today;
+	Calendar now;
+	Calendar in;
+	Calendar out;
+	SimpleDateFormat sdf1;
+	SimpleDateFormat sdf2;
 
 	public Guest() {
 		room = 0;
@@ -32,6 +41,8 @@ public class Guest {
 		date = 0;
 		money_s = "";
 		today = false;
+		sdf1 = new SimpleDateFormat("yyyyMMdd");
+		sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 	}
 
 	public void guestSet(Scanner sc) {
@@ -98,15 +109,14 @@ public class Guest {
 			System.out.println("룸을 랜덤 배정합니다.");
 			System.out.println(arr2.size());
 
-			
-			for(int i=0;i<arr2.size();i++) {
+			for (int i = 0; i < arr2.size(); i++) {
 				System.out.println(arr2.get(i).date);
 			}
 			System.out.println(reser);
-			
+
 			for (int i = 101; i <= 303; i++) {
 				System.out.println(i);
-				
+
 				for (int j = 0; j < arr2.size(); j++) {
 					if (arr2.get(j).date.equals(reser)) {
 						if (!(arr2.get(j).map.get(i))) {
@@ -138,7 +148,7 @@ public class Guest {
 			return;
 		}
 	}
-	
+
 	public void datecheck(ArrayList<ReservationDay> arr2) {
 		int cnt = 0;
 		if (arr2.size() != 0) {
@@ -160,11 +170,10 @@ public class Guest {
 	public int roomReservation_now(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
 			ArrayList<ReservationDay> arr2, int count) {
 
-		Calendar now = Calendar.getInstance();
-		year = now.get(Calendar.YEAR);
-		month = now.get(Calendar.MONTH - 2);
-		date = now.get(Calendar.DATE);
-		reser = year + "" + (month >= 10 ? month : "0" + month) + "" + date;
+		now = Calendar.getInstance();
+
+		reser = sdf1.format(now.getTime());
+		format_s = sdf2.format(now.getTime());
 
 		datecheck(arr2);
 
@@ -201,13 +210,9 @@ public class Guest {
 
 	public int roomReservation_later(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
 			ArrayList<ReservationDay> arr2, int count) {
-		Calendar now = Calendar.getInstance();
+		now = Calendar.getInstance();
 
-		year = now.get(Calendar.YEAR);
-		month = now.get(Calendar.MONTH - 2);
-		date = now.get(Calendar.DATE);
-
-		String now_s = year + "" + (month >= 10 ? month : "0" + month) + "" + date;
+		String now_s = sdf1.format(now.getTime());
 
 		System.out.println();
 		System.out.print("예약 날짜를 입력해주세요.(ex.20250101) : ");
@@ -235,6 +240,13 @@ public class Guest {
 			return hotelmoney;
 		}
 
+		in = Calendar.getInstance();
+
+		in.set(Calendar.YEAR, year);
+		in.set(Calendar.MONTH, month - 1);
+		in.set(Calendar.DAY_OF_MONTH, date);
+		format_s = sdf2.format(in.getTime());
+
 		roomSet(sc, hotelmoney, map1, format, arr2, count);
 		guestSet(sc);
 
@@ -260,9 +272,9 @@ public class Guest {
 		System.out.println();
 		System.out.println("결제되었습니다. 감사합니다.");
 		hotelmoney += money;
-		
-		if(reser.equals(now_s)) {
-			today=true;
+
+		if (reser.equals(now_s)) {
+			today = true;
 		}
 
 		return hotelmoney;
@@ -270,6 +282,14 @@ public class Guest {
 	}
 
 	public void getInfo() {
+		out = Calendar.getInstance();
+		out.set(Calendar.YEAR, year);
+		out.set(Calendar.MONTH, month - 1);
+		out.set(Calendar.DAY_OF_MONTH, date);
+		out.add(Calendar.DAY_OF_MONTH, day);
+		reser_e = sdf1.format(out.getTime());
+		format_e = sdf2.format(out.getTime());
+
 		System.out.println();
 		System.out.println("고객 성함 : " + name);
 		System.out.println("고객 성별 : " + (gender == 1 ? "남자" : "여자"));
@@ -277,12 +297,13 @@ public class Guest {
 		System.out.println("예약 룸 넘버 : " + room + "호");
 		System.out.println("숙박 인원 : " + people + "명");
 		System.out.println("숙박 일수 : " + day + "박 " + (day + 1) + "일");
-		System.out.println("체크인 : " + year + "년 " + month + "월 " + date + "일");
-		System.out.println("체크아웃 : " + year + "년 " + month + "월 " + (date + day) + "일");
+		System.out.println("체크인 : " + format_s);
+		System.out.println("체크아웃 : " + format_e);
 
 	}
 
-	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,ArrayList<ReservationDay> arr2) {
+	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
+			ArrayList<ReservationDay> arr2) {
 
 		try {
 			money_s = format.format(money * 0.9);
@@ -302,15 +323,15 @@ public class Guest {
 		if (ny.charAt(0) == 'Y' || ny.charAt(0) == 'y') {
 			hotelmoney -= (int) (money * 0.9);
 			name = "";
-			
+
 			for (int i = 0; i < arr2.size(); i++) {
 				if (arr2.get(i).date.equals(reser)) {
 					arr2.get(i).map.put(room, false);
-					}
-					break;
 				}
+				break;
+			}
 
-			room=0;
+			room = 0;
 			System.out.println();
 			System.out.println(room + "호실의 예약 취소가 완료되었습니다.");
 			System.out.println("감사합니다.");

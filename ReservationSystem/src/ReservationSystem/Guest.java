@@ -46,7 +46,7 @@ public class Guest {
 		sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 	}
 
-	public void guestSet(Scanner sc, ArrayList<ReservationDay> arr2) {
+	public void guestSet(Scanner sc) {
 		System.out.println();
 		System.out.print("고객 성함 : ");
 		name = sc.nextLine();
@@ -67,11 +67,9 @@ public class Guest {
 		day = sc.nextInt();
 		sc.nextLine();
 
-
 	}
 
-	public void roomSet(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
-			ArrayList<ReservationDay> arr2, int count) {
+	public void roomSet(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 
 		System.out.println();
 		System.out.println("원하시는 호실이 있나요?");
@@ -89,7 +87,7 @@ public class Guest {
 						System.out.println();
 						System.out.println(room + "호는 예약이 있습니다.");
 						room = 0;
-						roomSet(sc, hotelmoney, map1, format, arr2, count);
+						roomSet(sc, hotelmoney, format, arr2);
 						return;
 					}
 				}
@@ -99,41 +97,8 @@ public class Guest {
 				if (arr2.get(j).date.equals(reser)) {
 					if (!(arr2.get(j).map.get(room))) {
 
-						for (int z = 0; z < day; z++) {
-							int cnt = 0;
-							int a=0;
+						roomcheck(arr2);
 
-							ing = Calendar.getInstance();
-
-							ing.set(Calendar.YEAR, year);
-							ing.set(Calendar.MONTH, month - 1);
-							ing.set(Calendar.DAY_OF_MONTH, date+z);
-							String reser_i = sdf1.format(ing.getTime());
-
-							if (arr2.size() != 0) {
-								for (int k = 0; k < arr2.size(); k++) {
-									if (arr2.get(k).date.equals(reser_i)) {
-										cnt++;
-									}
-									if(arr2.get(k).date.equals(reser_i)) {
-										a=k;
-									}
-								}
-								if (cnt == 0) {
-									arr2.add(new ReservationDay());
-									arr2.get(arr2.size() - 1).date = reser_i;
-									arr2.get(arr2.size() - 1).map.put(room, true);
-								}else {
-									arr2.get(a).date=reser_i;
-									arr2.get(a).map.put(room, true);
-								}
-							} else {
-								arr2.add(new ReservationDay());
-								arr2.get(arr2.size() - 1).date = reser_i;
-								arr2.get(arr2.size() - 1).map.put(room, true);
-							}
-						}
-						
 						break;
 					}
 
@@ -145,7 +110,7 @@ public class Guest {
 			System.out.println();
 			System.out.println("룸을 랜덤 배정합니다.");
 			System.out.println(arr2.size());
-			for(int i=0;i<arr2.size();i++) {
+			for (int i = 0; i < arr2.size(); i++) {
 				System.out.println(arr2.get(i).map.get(101));
 				System.out.println(arr2.get(i).date);
 				System.out.println(arr2.get(i).room);
@@ -153,48 +118,13 @@ public class Guest {
 
 			for (int i = 101; i <= 303; i++) {
 				System.out.println(i);
-				
 
 				for (int j = 0; j < arr2.size(); j++) {
 					if (arr2.get(j).date.equals(reser)) {
 						if (!(arr2.get(j).map.get(i))) {
 							room = i;
-							
-							for (int z = 0; z < day; z++) {
-								int cnt = 0;
-								int a=0;
 
-								ing = Calendar.getInstance();
-
-								ing.set(Calendar.YEAR, year);
-								ing.set(Calendar.MONTH, month - 1);
-								ing.set(Calendar.DAY_OF_MONTH, date+z);
-								String reser_i = sdf1.format(ing.getTime());
-
-								if (arr2.size() != 0) {
-									for (int k = 0; k < arr2.size(); k++) {
-										if (arr2.get(k).date.equals(reser_i)) {
-											cnt++;
-										}
-										if(arr2.get(k).date.equals(reser_i)) {
-											a=k;
-										}
-									}
-									if (cnt == 0) {
-										arr2.add(new ReservationDay());
-										arr2.get(arr2.size() - 1).date = reser_i;
-										arr2.get(arr2.size() - 1).map.put(room, true);
-									}else {
-										arr2.get(a).date=reser_i;
-										arr2.get(a).map.put(room, true);
-									}
-								} else {
-									arr2.add(new ReservationDay());
-									arr2.get(arr2.size() - 1).date = reser_i;
-									arr2.get(arr2.size() - 1).map.put(room, true);
-								}
-							}
-							
+							roomcheck(arr2);
 
 							break;
 						}
@@ -206,7 +136,7 @@ public class Guest {
 				} else if (i == 303 && room == 0) {
 					System.out.println("해당 날짜의 모든 방이 예약되었습니다.");
 					System.out.println("다른 날짜로 예약해주세요.");
-					roomReservation_later(sc, hotelmoney, map1, format, arr2, count);
+					roomReservation_later(sc, hotelmoney, format, arr2);
 					return;
 				}
 
@@ -218,7 +148,7 @@ public class Guest {
 
 		} else {
 			System.out.println("잘못 입력하였습니다.");
-			roomSet(sc, hotelmoney, map1, format, arr2, count);
+			roomSet(sc, hotelmoney, format, arr2);
 			return;
 		}
 	}
@@ -241,8 +171,44 @@ public class Guest {
 		}
 	}
 
-	public int roomReservation_now(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
-			ArrayList<ReservationDay> arr2, int count) {
+	public void roomcheck(ArrayList<ReservationDay> arr2) {
+		for (int z = 0; z < day; z++) {
+			int cnt = 0;
+			int a = 0;
+
+			ing = Calendar.getInstance();
+
+			ing.set(Calendar.YEAR, year);
+			ing.set(Calendar.MONTH, month - 1);
+			ing.set(Calendar.DAY_OF_MONTH, date + z);
+			String reser_i = sdf1.format(ing.getTime());
+
+			if (arr2.size() != 0) {
+				for (int k = 0; k < arr2.size(); k++) {
+					if (arr2.get(k).date.equals(reser_i)) {
+						cnt++;
+					}
+					if (arr2.get(k).date.equals(reser_i)) {
+						a = k;
+					}
+				}
+				if (cnt == 0) {
+					arr2.add(new ReservationDay());
+					arr2.get(arr2.size() - 1).date = reser_i;
+					arr2.get(arr2.size() - 1).map.put(room, true);
+				} else {
+					arr2.get(a).date = reser_i;
+					arr2.get(a).map.put(room, true);
+				}
+			} else {
+				arr2.add(new ReservationDay());
+				arr2.get(arr2.size() - 1).date = reser_i;
+				arr2.get(arr2.size() - 1).map.put(room, true);
+			}
+		}
+	}
+
+	public int roomReservation_now(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 
 		in = Calendar.getInstance();
 
@@ -255,8 +221,8 @@ public class Guest {
 
 		datecheck(arr2);
 
-		guestSet(sc, arr2);
-		roomSet(sc, hotelmoney, map1, format, arr2, count);
+		guestSet(sc);
+		roomSet(sc, hotelmoney, format, arr2);
 
 		System.out.println();
 		System.out.println("입력하신 정보 입니다.");
@@ -286,8 +252,7 @@ public class Guest {
 
 	}
 
-	public int roomReservation_later(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
-			ArrayList<ReservationDay> arr2, int count) {
+	public int roomReservation_later(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 		now = Calendar.getInstance();
 
 		String now_s = sdf1.format(now.getTime());
@@ -298,7 +263,7 @@ public class Guest {
 
 		if (reser.length() != 8) {
 			System.out.println("잘못 입력하였습니다. 다시 입력해주세요.");
-			roomReservation_later(sc, hotelmoney, map1, format, arr2, count);
+			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		}
 
@@ -310,11 +275,11 @@ public class Guest {
 
 		if (year < 0 || month > 12 || date > 31) {
 			System.out.println("잘못 입력하였습니다. 다시 입력해주세요.");
-			roomReservation_later(sc, hotelmoney, map1, format, arr2, count);
+			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		} else if (Integer.parseInt(reser) < Integer.parseInt(now_s)) {
 			System.out.println("예약일은 현재 날짜 이후로 해주세요.");
-			roomReservation_later(sc, hotelmoney, map1, format, arr2, count);
+			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		}
 
@@ -325,8 +290,8 @@ public class Guest {
 		in.set(Calendar.DAY_OF_MONTH, date);
 		format_s = sdf2.format(in.getTime());
 
-		guestSet(sc, arr2);
-		roomSet(sc, hotelmoney, map1, format, arr2, count);
+		guestSet(sc);
+		roomSet(sc, hotelmoney, format, arr2);
 
 		System.out.println();
 		System.out.println("입력하신 정보 입니다.");
@@ -380,8 +345,7 @@ public class Guest {
 
 	}
 
-	public int roomCancle(Scanner sc, int hotelmoney, HashMap<Integer, Boolean> map1, DecimalFormat format,
-			ArrayList<ReservationDay> arr2) {
+	public int roomCancle(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 
 		try {
 			money_s = format.format(money * 0.9);
@@ -403,16 +367,28 @@ public class Guest {
 			name = "";
 
 			for (int i = 0; i < arr2.size(); i++) {
-				if (arr2.get(i).date.equals(reser)) {
-					arr2.get(i).map.put(room, false);
+
+				for (int z = 0; z < day; z++) {
+
+					ing = Calendar.getInstance();
+
+					ing.set(Calendar.YEAR, year);
+					ing.set(Calendar.MONTH, month - 1);
+					ing.set(Calendar.DAY_OF_MONTH, date + z);
+					String reser_i = sdf1.format(ing.getTime());
+
+					if (arr2.get(i).date.equals(reser_i)) {
+						arr2.get(i).map.put(room, false);
+					}
+
 				}
-				break;
+
 			}
 
-			room = 0;
 			System.out.println();
 			System.out.println(room + "호실의 예약 취소가 완료되었습니다.");
 			System.out.println("감사합니다.");
+			room = 0;
 
 		} else if (ny.charAt(0) == 'N' || ny.charAt(0) == 'n') {
 			System.out.println();
@@ -423,7 +399,7 @@ public class Guest {
 		return hotelmoney;
 	}
 
-	public int roomReservationChange(Scanner sc, int hotelmoney, DecimalFormat format) {
+	public int roomReservationChange(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 		System.out.println();
 		System.out.println("고객님의 예약 정보 입니다.");
 		System.out.println();
@@ -452,6 +428,7 @@ public class Guest {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 		}
+
 		out.set(Calendar.YEAR, year);
 		out.set(Calendar.MONTH, month - 1);
 		out.set(Calendar.DAY_OF_MONTH, date);
@@ -459,6 +436,7 @@ public class Guest {
 		reser_e = sdf1.format(out.getTime());
 		format_e = sdf2.format(out.getTime());
 
+		roomcheck(arr2);
 		System.out.println();
 		System.out.println("변경된 예약정보 입니다.");
 		System.out.println();

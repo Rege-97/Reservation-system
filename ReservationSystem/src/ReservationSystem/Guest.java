@@ -21,7 +21,6 @@ public class Guest {
 	String reser_e;
 	String format_s;
 	String format_e;
-	boolean today;
 	Calendar now;
 	Calendar in;
 	Calendar out;
@@ -41,7 +40,6 @@ public class Guest {
 		month = 0;
 		date = 0;
 		money_s = "";
-		today = false;
 		sdf1 = new SimpleDateFormat("yyyyMMdd");
 		sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
 	}
@@ -54,6 +52,12 @@ public class Guest {
 		System.out.print("고객 성별 (남 1 / 여 2) : ");
 		gender = sc.nextInt();
 		sc.nextLine();
+		
+		if (gender < 0 || gender > 2) {
+			System.out.println("잘못 입력하였습니다.");
+			guestSet(sc);
+			return;
+		}
 
 		System.out.print("고객 나이 : ");
 		age = sc.nextInt();
@@ -109,15 +113,8 @@ public class Guest {
 
 			System.out.println();
 			System.out.println("룸을 랜덤 배정합니다.");
-			System.out.println(arr2.size());
-			for (int i = 0; i < arr2.size(); i++) {
-				System.out.println(arr2.get(i).map.get(101));
-				System.out.println(arr2.get(i).date);
-				System.out.println(arr2.get(i).room);
-			}
 
 			for (int i = 101; i <= 303; i++) {
-				System.out.println(i);
 
 				for (int j = 0; j < arr2.size(); j++) {
 					if (arr2.get(j).date.equals(reser)) {
@@ -246,7 +243,6 @@ public class Guest {
 		System.out.println();
 		System.out.println("결제되었습니다. 감사합니다.");
 		hotelmoney += money;
-		today = true;
 
 		return hotelmoney;
 
@@ -315,10 +311,6 @@ public class Guest {
 		System.out.println();
 		System.out.println("결제되었습니다. 감사합니다.");
 		hotelmoney += money;
-
-		if (reser.equals(now_s)) {
-			today = true;
-		}
 
 		return hotelmoney;
 
@@ -394,6 +386,10 @@ public class Guest {
 			System.out.println();
 			System.out.println("고객님 요청으로 예약이 취소되지 않았습니다.");
 			System.out.println("감사합니다.");
+		}else {
+			System.out.println("잘못 입력하였습니다.");
+			roomCancle(sc, hotelmoney, format, arr2);
+			return hotelmoney;
 		}
 
 		return hotelmoney;

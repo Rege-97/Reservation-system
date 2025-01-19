@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -31,7 +31,7 @@ public class ReservationMain {
 		System.out.println();
 		System.out.print("고객명을 입력하세요 : ");
 		String guest = sc.nextLine();
-		int room_n = 0;
+		int room_n = -1;
 
 		for (int i = 0; i < arr.size(); i++) {
 			if (arr.get(i).name.equals(guest)) {
@@ -40,8 +40,6 @@ public class ReservationMain {
 				arr.get(i).getInfo();
 				room_n = i;
 				break;
-			} else {
-				room_n = -1;
 			}
 		}
 
@@ -147,10 +145,9 @@ public class ReservationMain {
 			int hotelmoney, int visit) {
 		int count_room = 0;
 		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH - 2);
-		int date = now.get(Calendar.DATE);
-		String today = year + "" + (month >= 10 ? month : "0" + month) + "" + date;
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+
+		String today = sdf1.format(now.getTime());
 
 		for (int i = 0; i < arr2.size(); i++) {
 			if (arr2.get(i).date.equals(today)) {
@@ -181,82 +178,97 @@ public class ReservationMain {
 		arr2.add(new ReservationDay());
 		DecimalFormat format = new DecimalFormat("#,###");
 
-		Scanner sc = new Scanner(System.in);
-
 		int hotelmoney = 100000;
 		int visit = 0;
 
 		while (true) {
+			Scanner sc = new Scanner(System.in);
+			try {
+				printMenu();
 
-			printMenu();
-
-			int user = sc.nextInt();
-			sc.nextLine();
-
-			switch (user) {
-			case 1:
-
-				System.out.println();
-				System.out.println("-----------------------------");
-				System.out.println("1. 오늘 예약");
-				System.out.println("2. 예약일 지정");
-				System.out.println("3. 이전 메뉴");
-				System.out.println("-----------------------------");
-				System.out.print("메뉴 입력 : ");
-				int user_a = sc.nextInt();
+				int user = sc.nextInt();
 				sc.nextLine();
 
-				switch (user_a) {
+				switch (user) {
 				case 1:
-					arr.add(new Guest());
+
 					System.out.println();
-					System.out.println("*오늘 예약*");
-					hotelmoney = arr.get(arr.size() - 1).roomReservation_now(sc, hotelmoney, format, arr2);
-					visit++;
+					System.out.println("-----------------------------");
+					System.out.println("1. 오늘 예약");
+					System.out.println("2. 예약일 지정");
+					System.out.println("3. 이전 메뉴");
+					System.out.println("-----------------------------");
+					System.out.print("메뉴 입력 : ");
+					int user_a = sc.nextInt();
+					sc.nextLine();
+
+					switch (user_a) {
+					case 1:
+						arr.add(new Guest());
+						System.out.println();
+						System.out.println("*오늘 예약*");
+						hotelmoney = arr.get(arr.size() - 1).roomReservation_now(sc, hotelmoney, format, arr2);
+						visit++;
+						break;
+					case 2:
+						arr.add(new Guest());
+						System.out.println();
+						System.out.println("*예약일 지정*");
+						hotelmoney = arr.get(arr.size() - 1).roomReservation_later(sc, hotelmoney, format, arr2);
+						visit++;
+						break;
+					case 3:
+						System.out.println();
+						System.out.println("이전 메뉴로 돌아갑니다.");
+						break;
+					default:
+						System.out.println();
+						System.out.println("잘못 입력하였습니다.");
+					}
+
 					break;
 				case 2:
-					arr.add(new Guest());
-					System.out.println();
-					System.out.println("*예약일 지정*");
-					hotelmoney = arr.get(arr.size() - 1).roomReservation_later(sc, hotelmoney, format, arr2);
-					visit++;
+					int room_n = search(sc, arr, hotelmoney);
+					System.out.println(room_n);
+
+					if (room_n == -1) {
+						System.out.println();
+						System.out.println("해당 고객명으로 예약한 방이 없습니다.");
+						continue;
+					}
+
+					hotelmoney = change(sc, arr, hotelmoney, room_n, format, arr2);
+
 					break;
 				case 3:
+					getRoomInfo(arr, arr2);
+
+					break;
+				case 4:
+					getHotelInfo(arr, arr2, format, hotelmoney, visit);
+
+					break;
+				case 5:
 					System.out.println();
-					System.out.println("이전 메뉴로 돌아갑니다.");
+					System.out.println("프로그램을 종료합니다.");
+					System.exit(0);
 					break;
 				default:
 					System.out.println();
 					System.out.println("잘못 입력하였습니다.");
 				}
-
-				break;
-			case 2:
-				int room_n = search(sc, arr, hotelmoney);
-
-				if (room_n == -1) {
-					System.out.println("해당 고객명으로 예약한 방이 없습니다.");
-					continue;
-				}
-
-				hotelmoney = change(sc, arr, hotelmoney, room_n, format, arr2);
-
-				break;
-			case 3:
-				getRoomInfo(arr, arr2);
-
-				break;
-			case 4:
-				getHotelInfo(arr, arr2, format, hotelmoney, visit);
-				break;
-			case 5:
-				System.out.println();
-				System.out.println("프로그램을 종료합니다.");
-				System.exit(0);
-				break;
-			default:
+			} catch (InputMismatchException e) {
 				System.out.println();
 				System.out.println("잘못 입력하였습니다.");
+				System.out.println("메뉴로 돌아갑니다.");
+			} catch (NullPointerException e) {
+				System.out.println();
+				System.out.println("방 번호를 잘못 입력하였습니다.");
+				System.out.println("메뉴로 돌아갑니다.");
+			} catch (Exception e) {
+				System.out.println();
+				System.out.println("알 수 없는 오류가 발생하였습니다.");
+				System.out.println("고객센터에 문의하여 주십시오.");
 			}
 
 		}

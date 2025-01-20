@@ -3,13 +3,11 @@ package ReservationSystem;
 import java.util.HashMap;
 
 public class ReservationDay {
-	int room;
 	String date;
 	HashMap<Integer, Boolean> map;
 	
 	
 	public ReservationDay() {
-		room=0;
 		date="";
 		map = new HashMap<Integer, Boolean>();
 		for (int i = 1; i <= 3; i++) {

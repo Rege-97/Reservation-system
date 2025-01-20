@@ -16,6 +16,7 @@ public class Guest {
 	int year;
 	int month;
 	int date;
+	int search;
 	String money_s;
 	String reser;
 	String reser_e;
@@ -39,6 +40,7 @@ public class Guest {
 		year = 0;
 		month = 0;
 		date = 0;
+		search=0;
 		money_s = "";
 		sdf1 = new SimpleDateFormat("yyyyMMdd");
 		sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
@@ -115,7 +117,6 @@ public class Guest {
 			System.out.println("룸을 랜덤 배정합니다.");
 
 			for (int i = 101; i <= 303; i++) {
-
 				for (int j = 0; j < arr2.size(); j++) {
 					if (arr2.get(j).date.equals(reser)) {
 						if (!(arr2.get(j).map.get(i))) {

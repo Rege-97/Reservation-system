@@ -28,6 +28,7 @@ public class ReservationMain {
 	}
 
 	public static int search(Scanner sc, ArrayList<Guest> arr, int hotelmoney) {
+		int cnt = 0;
 		System.out.println();
 		System.out.print("고객명을 입력하세요 : ");
 		String guest = sc.nextLine();
@@ -35,12 +36,44 @@ public class ReservationMain {
 
 		for (int i = 0; i < arr.size(); i++) {
 			if (arr.get(i).name.equals(guest)) {
-				System.out.println();
-				System.out.println("검색하신 고객님의 정보 입니다.");
-				arr.get(i).getInfo();
-				room_n = i;
-				break;
+				cnt++;
 			}
+		}
+
+		System.out.println();
+		System.out.println(cnt + "건의 예약이 검색되었습니다.");
+
+		cnt = 0;
+
+		for (int i = 0; i < arr.size(); i++) {
+			if (arr.get(i).name.equals(guest)) {
+				cnt++;
+				System.out.println();
+				System.out.println("====" + (cnt) + "번째 고객====");
+				arr.get(i).search = cnt;
+				arr.get(i).getInfo();
+
+				room_n = i;
+			}
+		}
+
+		if (cnt >= 2) {
+
+			System.out.println();
+			System.out.println("동명이인이 있습니다.");
+			System.out.println();
+			System.out.print("몇 번째 고객을 검색할까요? : ");
+			int num = sc.nextInt();
+			sc.nextLine();
+			for (int i = 0; i < arr.size(); i++) {
+				if (arr.get(i).name.equals(guest) && arr.get(i).search == num) {
+					System.out.println();
+					System.out.println(num + "번째 고객입니다.");
+					arr.get(i).getInfo();
+					room_n = i;
+				}
+			}
+
 		}
 
 		return room_n;
@@ -229,7 +262,6 @@ public class ReservationMain {
 					break;
 				case 2:
 					int room_n = search(sc, arr, hotelmoney);
-					System.out.println(room_n);
 
 					if (room_n == -1) {
 						System.out.println();

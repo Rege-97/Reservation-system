@@ -12,25 +12,43 @@ public class ReservationMain {
 
 	public static void printMenu() {
 
+		System.out.println(" ________________________________________________");
+		System.out.println("|     ___                  ___  _____  __  __    |");
+		System.out.println("|    / __\\ /\\  /\\   /\\  /\\/___\\/__   \\/__\\/ /    |");
+		System.out.println("|   / /   / /_/ /  / /_/ //  //  / /\\/_\\ / /     |");
+		System.out.println("|  / /___/ __  /  / __  / \\_//  / / //__/ /___   |");
+		System.out.println("|  \\____/\\/ /_/   \\/ /_/\\___/   \\/  \\__/\\____/   |");
+		System.out.println("|________________________________________________|");
 		System.out.println();
-		System.out.println("=============================");
-		System.out.println("OO 호텔 예약 시스템");
-		System.out.println("OO Hotel Reservation System");
-		System.out.println("-----------------------------");
-		System.out.println("1. 룸 예약하기");
-		System.out.println("2. 고객 검색");
-		System.out.println("3. 룸 예약 현황");
-		System.out.println("4. 영업 현황 확인");
-		System.out.println("5. 프로그램 종료");
-		System.out.println("-----------------------------");
-		System.out.print("메뉴 입력 : ");
+		try {
+			Thread.sleep(800);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("==================================================");
+		System.out.println();
+		System.out.println("             * CH 호텔 예약 시스템 *");
+		System.out.println("         * CH Hotel Reservation System *");
+		System.out.println("               * 1 Day 55,000won *");
+		System.out.println();
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.println("                * 1. 룸 예약하기");
+		System.out.println("                * 2. 고객 검색");
+		System.out.println("                * 3. 룸 예약 현황");
+		System.out.println("                * 4. 영업 현황 확인               ");
+		System.out.println("                * 5. 프로그램 종료");
+		System.out.println();
+		System.out.print("                * 메뉴 입력 : ");
 
 	}
 
 	public static int search(Scanner sc, ArrayList<Guest> arr, int hotelmoney) {
 		int cnt = 0;
 		System.out.println();
-		System.out.print("고객명을 입력하세요 : ");
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.print("          * 고객명을 입력하세요 : ");
 		String guest = sc.nextLine();
 		int room_n = -1;
 
@@ -41,7 +59,13 @@ public class ReservationMain {
 		}
 
 		System.out.println();
-		System.out.println(cnt + "건의 예약이 검색되었습니다.");
+		System.out.println("         * " + cnt + "건의 예약이 검색되었습니다. *");
+
+		try {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		cnt = 0;
 
@@ -49,7 +73,7 @@ public class ReservationMain {
 			if (arr.get(i).name.equals(guest)) {
 				cnt++;
 				System.out.println();
-				System.out.println("====" + (cnt) + "번째 고객====");
+				System.out.println("               ==== " + (cnt) + "번째 고객 ====");
 				arr.get(i).search = cnt;
 				arr.get(i).getInfo();
 
@@ -58,17 +82,18 @@ public class ReservationMain {
 		}
 
 		if (cnt >= 2) {
-
 			System.out.println();
-			System.out.println("동명이인이 있습니다.");
+			System.out.println("--------------------------------------------------");
 			System.out.println();
-			System.out.print("몇 번째 고객을 검색할까요? : ");
+			System.out.println("            -- 동명이인이 있습니다. --            ");
+			System.out.println();
+			System.out.print("         * 몇 번째 고객을 검색할까요? : ");
 			int num = sc.nextInt();
 			sc.nextLine();
 			for (int i = 0; i < arr.size(); i++) {
 				if (arr.get(i).name.equals(guest) && arr.get(i).search == num) {
 					System.out.println();
-					System.out.println(num + "번째 고객입니다.");
+					System.out.println("               * " + num + "번째 고객입니다. *");
 					arr.get(i).getInfo();
 					room_n = i;
 				}
@@ -83,12 +108,13 @@ public class ReservationMain {
 	public static int change(Scanner sc, ArrayList<Guest> arr, int hotelmoney, int room_n, DecimalFormat format,
 			ArrayList<ReservationDay> arr2) {
 		System.out.println();
-		System.out.println("-----------------------------");
-		System.out.println("1. 예약 취소");
-		System.out.println("2. 예약 연장");
-		System.out.println("3. 이전 메뉴");
-		System.out.println("-----------------------------");
-		System.out.print("메뉴 입력 : ");
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.println("                  * 1. 예약 취소                  ");
+		System.out.println("                  * 2. 예약 연장");
+		System.out.println("                  * 3. 이전 메뉴");
+		System.out.println();
+		System.out.print("                  * 메뉴 입력 : ");
 		int user2 = sc.nextInt();
 
 		try {
@@ -101,14 +127,14 @@ public class ReservationMain {
 				hotelmoney = arr.get(room_n).roomReservationChange(sc, hotelmoney, format, arr2);
 				break;
 			case 3:
-				System.out.println("이전 메뉴로 돌아갑니다.");
+				System.out.println("            * 이전 메뉴로 돌아갑니다. *           ");
 				break;
 			default:
-				System.out.println("잘못 입력하였습니다.");
+				System.out.println("            -- 잘못 입력하였습니다. --          ");
 			}
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println();
-			System.out.println("예약한 고객이 없습니다.");
+			System.out.println("           -- 예약한 고객이 없습니다. --          ");
 		}
 
 		return hotelmoney;
@@ -125,9 +151,10 @@ public class ReservationMain {
 		String today = sdf1.format(now.getTime());
 
 		System.out.println();
-		System.out.println("호텔 룸 예약 현황");
+		System.out.println("--------------------------------------------------");
 		System.out.println();
-		System.out.println("-----------------------------");
+		System.out.println("             *** 호텔 룸 예약 현황 ***            ");
+		System.out.println();
 
 		while (keys.hasNext()) {
 			key.add(keys.next());
@@ -135,18 +162,18 @@ public class ReservationMain {
 
 		for (int i = 0; i < key.size(); i++) {
 			System.out.println();
-			System.out.println("***" + key.get(i) + "호실***");
-			System.out.println("--------------------------------");
+			System.out.println("                  *** " + key.get(i) + "호실 ***");
+			System.out.println("--------------------------------------------------");
 
 			for (int j = 0; j < arr.size(); j++) {
 				check = false;
 				if (arr.get(j).reser.equals(today) && arr.get(j).room == key.get(i)) {
-					System.out.println("- 현재 이용 중");
+					System.out.println("                 * 현재 이용 중 *                 ");
 					System.out.println();
-					System.out.println("고객 성함 : " + arr.get(j).name);
-					System.out.println("숙박 인원 : " + arr.get(j).people + "명");
-					System.out.println("체크인 : " + arr.get(j).format_s);
-					System.out.println("체크아웃 : " + arr.get(j).format_e);
+					System.out.println("           * 고객 성함 : " + arr.get(j).name);
+					System.out.println("           * 숙박 인원 : " + arr.get(j).people + "명");
+					System.out.println("           * 체크인 : " + arr.get(j).format_s);
+					System.out.println("           * 체크아웃 : " + arr.get(j).format_e);
 					System.out.println();
 					check = true;
 					break;
@@ -154,18 +181,18 @@ public class ReservationMain {
 			}
 
 			if (!check) {
-				System.out.println("- 현재 빈방");
+				System.out.println("                  -- 현재 빈방 --                 ");
 				System.out.println();
 			}
 
 			for (int j = 0; j < arr.size(); j++) {
 				if (!(arr.get(j).reser.equals(today)) && arr.get(j).room == key.get(i)) {
-					System.out.println("- 예약자");
+					System.out.println("                    * 예약자 *                    ");
 					System.out.println();
-					System.out.println("고객 성함 : " + arr.get(j).name);
-					System.out.println("숙박 인원 : " + arr.get(j).people + "명");
-					System.out.println("체크인 : " + arr.get(j).format_s);
-					System.out.println("체크아웃 : " + arr.get(j).format_e);
+					System.out.println("           * 고객 성함 : " + arr.get(j).name);
+					System.out.println("           * 숙박 인원 : " + arr.get(j).people + "명");
+					System.out.println("           * 체크인 : " + arr.get(j).format_s);
+					System.out.println("           * 체크아웃 : " + arr.get(j).format_e);
 					System.out.println();
 				}
 			}
@@ -198,10 +225,15 @@ public class ReservationMain {
 
 		String hotelmoney_s = format.format(hotelmoney);
 		System.out.println();
-		System.out.println("현재 이용 고객 수 : " + count_room + "명");
-		System.out.println("누적 방문 고객 수 : " + visit + "명");
-		System.out.println("누적 매출액 : " + format.format(hotelmoney - 100000) + "원");
-		System.out.println("현재 금고 잔액 : " + hotelmoney_s + "원");
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.println("                * 현재 영업 현황 *                ");
+		System.out.println();
+		System.out.println("           * 현재 이용 고객 수 : " + count_room + "명");
+		System.out.println("           * 누적 방문 고객 수 : " + visit + "명");
+		System.out.println("           * 누적 매출액 : " + format.format(hotelmoney - 100000) + "원");
+		System.out.println("           * 현재 금고 잔액 : " + hotelmoney_s + "원");
+		System.out.println();
 
 	}
 
@@ -226,12 +258,13 @@ public class ReservationMain {
 				case 1:
 
 					System.out.println();
-					System.out.println("-----------------------------");
-					System.out.println("1. 오늘 예약");
-					System.out.println("2. 예약일 지정");
-					System.out.println("3. 이전 메뉴");
-					System.out.println("-----------------------------");
-					System.out.print("메뉴 입력 : ");
+					System.out.println("--------------------------------------------------");
+					System.out.println();
+					System.out.println("                 * 1. 오늘 예약");
+					System.out.println("                 * 2. 예약일 지정                 ");
+					System.out.println("                 * 3. 이전 메뉴");
+					System.out.println();
+					System.out.print("                 * 메뉴 입력 : ");
 					int user_a = sc.nextInt();
 					sc.nextLine();
 
@@ -239,24 +272,28 @@ public class ReservationMain {
 					case 1:
 						arr.add(new Guest());
 						System.out.println();
-						System.out.println("*오늘 예약*");
+						System.out.println("--------------------------------------------------");
+						System.out.println();
+						System.out.println("                  * 오늘 예약 *                   ");
 						hotelmoney = arr.get(arr.size() - 1).roomReservation_now(sc, hotelmoney, format, arr2);
 						visit++;
 						break;
 					case 2:
 						arr.add(new Guest());
 						System.out.println();
-						System.out.println("*예약일 지정*");
+						System.out.println("--------------------------------------------------");
+						System.out.println();
+						System.out.println("                 * 예약일 지정 *                  ");
 						hotelmoney = arr.get(arr.size() - 1).roomReservation_later(sc, hotelmoney, format, arr2);
 						visit++;
 						break;
 					case 3:
 						System.out.println();
-						System.out.println("이전 메뉴로 돌아갑니다.");
+						System.out.println("            * 이전 메뉴로 돌아갑니다. *           ");
 						break;
 					default:
 						System.out.println();
-						System.out.println("잘못 입력하였습니다.");
+						System.out.println("             * 잘못 입력하였습니다. *             ");
 					}
 
 					break;
@@ -265,7 +302,7 @@ public class ReservationMain {
 
 					if (room_n == -1) {
 						System.out.println();
-						System.out.println("해당 고객명으로 예약한 방이 없습니다.");
+						System.out.println("    -- 해당 고객명으로 예약한 방이 없습니다. --");
 						continue;
 					}
 
@@ -282,25 +319,25 @@ public class ReservationMain {
 					break;
 				case 5:
 					System.out.println();
-					System.out.println("프로그램을 종료합니다.");
+					System.out.println("           -- 프로그램을 종료합니다. --           ");
 					System.exit(0);
 					break;
 				default:
 					System.out.println();
-					System.out.println("잘못 입력하였습니다.");
+					System.out.println("            -- 잘못 입력하였습니다. --            ");
 				}
 			} catch (InputMismatchException e) {
 				System.out.println();
-				System.out.println("잘못 입력하였습니다.");
-				System.out.println("메뉴로 돌아갑니다.");
+				System.out.println("            -- 잘못 입력하였습니다. --            ");
+				System.out.println("             -- 메뉴로 돌아갑니다. --");
 			} catch (NullPointerException e) {
 				System.out.println();
-				System.out.println("방 번호를 잘못 입력하였습니다.");
-				System.out.println("메뉴로 돌아갑니다.");
+				System.out.println("       -- 방 번호를 잘못 입력하였습니다. --       ");
+				System.out.println("             -- 메뉴로 돌아갑니다. --");
 			} catch (Exception e) {
 				System.out.println();
-				System.out.println("알 수 없는 오류가 발생하였습니다.");
-				System.out.println("고객센터에 문의하여 주십시오.");
+				System.out.println("      -- 알 수 없는 오류가 발생하였습니다. --     ");
+				System.out.println("        -- 고객센터에 문의하여 주십시오. --       ");
 			}
 
 		}

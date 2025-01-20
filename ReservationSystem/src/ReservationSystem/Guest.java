@@ -48,28 +48,28 @@ public class Guest {
 
 	public void guestSet(Scanner sc) {
 		System.out.println();
-		System.out.print("고객 성함 : ");
+		System.out.print("           * 고객 성함 : ");
 		name = sc.nextLine();
 
-		System.out.print("고객 성별 (남 1 / 여 2) : ");
+		System.out.print("           * 고객 성별 (남 1 / 여 2) : ");
 		gender = sc.nextInt();
 		sc.nextLine();
 		
 		if (gender < 0 || gender > 2) {
-			System.out.println("잘못 입력하였습니다.");
+			System.out.println("            -- 잘못 입력하였습니다. --          ");
 			guestSet(sc);
 			return;
 		}
 
-		System.out.print("고객 나이 : ");
+		System.out.print("           * 고객 나이 : ");
 		age = sc.nextInt();
 		sc.nextLine();
 
-		System.out.print("숙박 인원 : ");
+		System.out.print("           * 숙박 인원 : ");
 		people = sc.nextInt();
 		sc.nextLine();
 
-		System.out.print("숙박 일수 : ");
+		System.out.print("           * 숙박 일수 : ");
 		day = sc.nextInt();
 		sc.nextLine();
 
@@ -78,12 +78,16 @@ public class Guest {
 	public void roomSet(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 
 		System.out.println();
-		System.out.println("원하시는 호실이 있나요?");
-		System.out.print("Y/N : ");
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.println("           * 원하시는 호실이 있나요? *            ");
+		System.out.println();
+		System.out.print("           * Y / N : ");
 
 		String ny = sc.nextLine();
 		if (ny.charAt(0) == 'Y' || ny.charAt(0) == 'y') {
-			System.out.print("원하시는 호실을 입력해 주세요 : ");
+			System.out.println();
+			System.out.print("       * 원하시는 호실을 입력해 주세요 : ");
 			room = sc.nextInt();
 			sc.nextLine();
 
@@ -91,7 +95,7 @@ public class Guest {
 				if (arr2.get(i).date.equals(reser)) {
 					if (arr2.get(i).map.get(room)) {
 						System.out.println();
-						System.out.println(room + "호는 예약이 있습니다.");
+						System.out.println("          -- "+room + "호는 예약이 있습니다. --          ");
 						room = 0;
 						roomSet(sc, hotelmoney, format, arr2);
 						return;
@@ -114,7 +118,9 @@ public class Guest {
 		} else if (ny.charAt(0) == 'N' || ny.charAt(0) == 'n') {
 
 			System.out.println();
-			System.out.println("룸을 랜덤 배정합니다.");
+			System.out.println("--------------------------------------------------");
+			System.out.println();
+			System.out.println("           * 룸을 랜덤 배정합니다. *             ");
 
 			for (int i = 101; i <= 303; i++) {
 				for (int j = 0; j < arr2.size(); j++) {
@@ -132,8 +138,10 @@ public class Guest {
 				if (room == i) {
 					break;
 				} else if (i == 303 && room == 0) {
-					System.out.println("해당 날짜의 모든 방이 예약되었습니다.");
-					System.out.println("다른 날짜로 예약해주세요.");
+					System.out.println("--------------------------------------------------");
+					System.out.println();
+					System.out.println("   -- 해당 날짜의 모든 방이 예약되었습니다. --    ");
+					System.out.println("         -- 다른 날짜로 예약해주세요. --          ");
 					roomReservation_later(sc, hotelmoney, format, arr2);
 					return;
 				}
@@ -145,7 +153,8 @@ public class Guest {
 			}
 
 		} else {
-			System.out.println("잘못 입력하였습니다.");
+			System.out.println();
+			System.out.println("            -- 잘못 입력하였습니다. --          ");
 			roomSet(sc, hotelmoney, format, arr2);
 			return;
 		}
@@ -223,7 +232,7 @@ public class Guest {
 		roomSet(sc, hotelmoney, format, arr2);
 
 		System.out.println();
-		System.out.println("입력하신 정보 입니다.");
+		System.out.println("           * 입력하신 정보 입니다.");
 		getInfo();
 		try {
 			Thread.sleep(1500);
@@ -235,14 +244,17 @@ public class Guest {
 		money_s = format.format(money);
 
 		System.out.println();
-		System.out.println(day + "박 결제 비용은 " + money_s + "원 입니다.");
+		System.out.println("        * "+day + "박 결제 비용은 " + money_s + "원 입니다. *");
+		
+	
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		System.out.println();
-		System.out.println("결제되었습니다. 감사합니다.");
+		System.out.println("          * 결제되었습니다. 감사합니다. *         ");
+		System.out.println();
 		hotelmoney += money;
 
 		return hotelmoney;
@@ -255,11 +267,12 @@ public class Guest {
 		String now_s = sdf1.format(now.getTime());
 
 		System.out.println();
-		System.out.print("예약 날짜를 입력해주세요.(ex.20250101) : ");
+		System.out.print("* 예약 날짜를 입력해주세요(ex.20250101) : ");
 		reser = sc.nextLine();
 
 		if (reser.length() != 8) {
-			System.out.println("잘못 입력하였습니다. 다시 입력해주세요.");
+			System.out.println();
+			System.out.println("   -- 잘못 입력하였습니다. 다시 입력해주세요. --  ");
 			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		}
@@ -271,11 +284,13 @@ public class Guest {
 		date = Integer.parseInt(reser.substring(6));
 
 		if (year < 0 || month > 12 || date > 31) {
-			System.out.println("잘못 입력하였습니다. 다시 입력해주세요.");
+			System.out.println();
+			System.out.println("   -- 잘못 입력하였습니다. 다시 입력해주세요. --  ");
 			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		} else if (Integer.parseInt(reser) < Integer.parseInt(now_s)) {
-			System.out.println("예약일은 현재 날짜 이후로 해주세요.");
+			System.out.println();
+			System.out.println("     -- 예약일은 현재 날짜 이후로 해주세요. --    ");
 			roomReservation_later(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		}
@@ -291,7 +306,7 @@ public class Guest {
 		roomSet(sc, hotelmoney, format, arr2);
 
 		System.out.println();
-		System.out.println("입력하신 정보 입니다.");
+		System.out.println("           * 입력하신 정보 입니다.");
 		getInfo();
 		try {
 			Thread.sleep(1500);
@@ -303,15 +318,16 @@ public class Guest {
 		money_s = format.format(money);
 
 		System.out.println();
-		System.out.println(day + "박 결제 비용은 " + money_s + "원 입니다.");
+		System.out.println("        * "+day + "박 결제 비용은 " + money_s + "원 입니다. *");
+	
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		System.out.println();
-		System.out.println("결제되었습니다. 감사합니다.");
-		hotelmoney += money;
+		System.out.println("          * 결제되었습니다. 감사합니다. *         ");
+		System.out.println();
 
 		return hotelmoney;
 
@@ -327,14 +343,14 @@ public class Guest {
 		format_e = sdf2.format(out.getTime());
 
 		System.out.println();
-		System.out.println("고객 성함 : " + name);
-		System.out.println("고객 성별 : " + (gender == 1 ? "남자" : "여자"));
-		System.out.println("고객 나이 : " + age + "세");
-		System.out.println("예약 룸 넘버 : " + room + "호");
-		System.out.println("숙박 인원 : " + people + "명");
-		System.out.println("숙박 일수 : " + day + "박 " + (day + 1) + "일");
-		System.out.println("체크인 : " + format_s);
-		System.out.println("체크아웃 : " + format_e);
+		System.out.println("           * 고객 성함 : " + name);
+		System.out.println("           * 고객 성별 : " + (gender == 1 ? "남자" : "여자"));
+		System.out.println("           * 고객 나이 : " + age + "세");
+		System.out.println("           * 예약 룸 넘버 : " + room + "호");
+		System.out.println("           * 숙박 인원 : " + people + "명");
+		System.out.println("           * 숙박 일수 : " + day + "박 " + (day + 1) + "일");
+		System.out.println("           * 체크인 : " + format_s);
+		System.out.println("           * 체크아웃 : " + format_e);
 
 	}
 
@@ -343,17 +359,19 @@ public class Guest {
 		try {
 			money_s = format.format(money * 0.9);
 			System.out.println();
-			System.out.println(name + " 고객님의 예약취소를 도와드리겠습니다.");
+			System.out.println("--------------------------------------------------");
+			System.out.println();
+			System.out.println("  * "+name + " 고객님의 예약취소를 도와드리겠습니다. *");
 			Thread.sleep(1500);
-			System.out.println("취소수수료가 10% 부과되어 환불됩니다.");
+			System.out.println("     * 취소수수료가 10% 부과되어 환불됩니다. *    ");
 			Thread.sleep(1500);
-			System.out.println("환불 금액은 " + money_s + "원 입니다.");
+			System.out.println("         * 환불 금액은 " + money_s + "원 입니다. *");
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 		}
 		System.out.println();
-		System.out.println("취소하시겠습니까?");
-		System.out.print("Y/N : ");
+		System.out.println("               * 취소하시겠습니까? *              ");
+		System.out.print("               * Y/N : ");
 		String ny = sc.next();
 		if (ny.charAt(0) == 'Y' || ny.charAt(0) == 'y') {
 			hotelmoney -= (int) (money * 0.9);
@@ -379,16 +397,16 @@ public class Guest {
 			}
 
 			System.out.println();
-			System.out.println(room + "호실의 예약 취소가 완료되었습니다.");
-			System.out.println("감사합니다.");
+			System.out.println("     * "+room + "호실의 예약 취소가 완료되었습니다. *");
+			System.out.println("                  * 감사합니다. *                 ");
 			room = 0;
 
 		} else if (ny.charAt(0) == 'N' || ny.charAt(0) == 'n') {
 			System.out.println();
-			System.out.println("고객님 요청으로 예약이 취소되지 않았습니다.");
-			System.out.println("감사합니다.");
+			System.out.println(" -- 고객님 요청으로 예약이 취소되지 않았습니다. --");
+			System.out.println("                 -- 감사합니다. --                ");
 		}else {
-			System.out.println("잘못 입력하였습니다.");
+			System.out.println("            -- 잘못 입력하였습니다. --          ");
 			roomCancle(sc, hotelmoney, format, arr2);
 			return hotelmoney;
 		}
@@ -398,28 +416,30 @@ public class Guest {
 
 	public int roomReservationChange(Scanner sc, int hotelmoney, DecimalFormat format, ArrayList<ReservationDay> arr2) {
 		System.out.println();
-		System.out.println("고객님의 예약 정보 입니다.");
+		System.out.println("--------------------------------------------------");
+		System.out.println();
+		System.out.println("           * 고객님의 예약 정보 입니다.");
 		System.out.println();
 
-		System.out.println("숙박 일수 : " + day + "박 " + (day + 1) + "일");
-		System.out.println("체크인 : " + format_s);
-		System.out.println("체크아웃 : " + format_e);
+		System.out.println("           * 숙박 일수 : " + day + "박 " + (day + 1) + "일");
+		System.out.println("           * 체크인 : " + format_s);
+		System.out.println("           * 체크아웃 : " + format_e);
 
 		System.out.println();
-		System.out.print("몇 박을 연장하시겠습니까? : ");
+		System.out.print("           * 몇 박을 연장하시겠습니까? : ");
 		int day_c = sc.nextInt();
 		int money_c = 55000 * day_c;
 		day += day_c;
 		money_s = format.format(money_c);
 
 		System.out.println();
-		System.out.println(day_c + "박 추가 결제 비용은 " + money_s + "원 입니다.");
+		System.out.println("     * "+day_c + "박 추가 결제 비용은 " + money_s + "원 입니다. *");
 		try {
 			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 		}
 		System.out.println();
-		System.out.println("결제되었습니다. 감사합니다.");
+		System.out.println("          * 결제되었습니다. 감사합니다. *         ");
 
 		try {
 			Thread.sleep(1500);
@@ -435,11 +455,11 @@ public class Guest {
 
 		roomcheck(arr2);
 		System.out.println();
-		System.out.println("변경된 예약정보 입니다.");
+		System.out.println("           * 변경된 예약정보 입니다.");
 		System.out.println();
-		System.out.println("숙박 일수 : " + day + "박 " + (day + 1) + "일");
-		System.out.println("체크인 : " + format_s);
-		System.out.println("체크아웃 : " + format_e);
+		System.out.println("           * 숙박 일수 : " + day + "박 " + (day + 1) + "일");
+		System.out.println("           * 체크인 : " + format_s);
+		System.out.println("           * 체크아웃 : " + format_e);
 
 		hotelmoney += money_c;
 

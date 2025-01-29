@@ -9,7 +9,13 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class ReservationMain {
-
+	
+	/* 기본 메뉴 출력 메서드
+	 * 
+	 * Thread.sleep()을 이용하여
+	 * 타이틀과 입력 메뉴에 출력 격차를 주어
+	 * 로딩처럼 화면 구현
+	 * */
 	public static void printMenu() {
 
 		System.out.println(" ________________________________________________");
@@ -42,6 +48,21 @@ public class ReservationMain {
 		System.out.print("                * 메뉴 입력 : ");
 
 	}
+	
+	/* 메인메뉴 - 2
+	 * 고객 검색 메서드
+	 * 
+	 * 입력받은 고객명을 현재 고객 객체(arr)수 만큼 반복하여
+	 * 해당 고객이 몇 명이 있는지 cnt로 카운팅 (동명이인 체크)
+	 * 
+	 * 다시 cnt를 0으로 초기화 한 뒤
+	 * 고객 객체 수만큼 입력받은 고객명을 비교하여 고객정보 출력
+	 * cnt로 카운팅 된 번호를 고객 객체에 저장하여 몇 번째 고객인지 구분
+	 * 
+	 * 동명이인이 있다면 몇 번째 고객을 찾는건지 입력을 받은 뒤
+	 * 고객 객체들 중 입력된 고객 이름이 똑같고 저장된 고객 번호(search)가 같으면
+	 * 해당 고객의 정보만 출력 후 해당 고객의 ArrayList 인덱스를 반환
+	 * */
 
 	public static int search(Scanner sc, ArrayList<Guest> arr, int hotelmoney) {
 		int cnt = 0;
@@ -104,7 +125,23 @@ public class ReservationMain {
 		return room_n;
 
 	}
-
+	
+	/* 예약 정보 변경 메서드
+	 * 
+	 * 고객 검색 메서드로 찾은 고객데이터가 들어있는 arr의 인덱스(room_n)로
+	 * 취소와 연장을 결정할 수 있는 메뉴 출력
+	 * 
+	 * 취소 시 
+	 * 예약 취소 메서드 실행
+	 * 
+	 * 연장 시
+	 * 예약 연장 메서드 실행
+	 * 
+	 * 3번을 입력 시 이전 메뉴로 이동
+	 *
+	 * 취소하거나 연장에서 변경된 hotelmoney를 반환
+	 * 
+	 * */
 	public static int change(Scanner sc, ArrayList<Guest> arr, int hotelmoney, int room_n, DecimalFormat format,
 			ArrayList<ReservationDay> arr2) {
 		System.out.println();
@@ -139,6 +176,20 @@ public class ReservationMain {
 
 		return hotelmoney;
 	}
+	
+	/* 예약 현황 메서드
+	 * 
+	 * 예약일 정보가 들어있는 arr2 안에 있는 해쉬맵의 키 값을 추출하여 key에 저장
+	 * 오늘 날짜를 담고 있는 today 변수를 만들고 모든 호실을 체크할 수 있는 반복문을 이용
+	 * 그 반복문 안에서 모든 고객 정보를 확인하는 반복문을 이용하여
+	 * today의 내용과 해당 고객의 예약일이 같고 지금 확인하는 호실 정보가 같다면
+	 * 빈방인지 체크하는 check 변수를 true로 바꾸고 현재 이용중으로 표시
+	 * 만약 모든 고객을 확인하였는데도 check가 false라면 현재 빈방으로 표시
+	 * 
+	 * 오늘의 예약정보를 확인 후 이번에는 모든 고객 정보를 확인하되
+	 * 예약일 정보가 today와 같지 않고 호실 정보가 같으면 예약중으로 표시
+	 * 
+	 * */
 
 	public static void getRoomInfo(ArrayList<Guest> arr, ArrayList<ReservationDay> arr2) {
 		Iterator<Integer> keys = arr2.get(0).map.keySet().iterator();
@@ -200,6 +251,19 @@ public class ReservationMain {
 		}
 
 	}
+	
+	/* 영업 현황 메서드
+	 * 
+	 * 오늘 날짜를 담고 있는 today 변수 생성
+	 * 
+	 * 예약일을 모음인 arr2를 모두 확인하여 오늘 날짜의 예약정보를 찾고 
+	 * 해당 날짜에 룸 예약수를 카운트 하여 count_room(현재 이용 고객)을 생성
+	 * 
+	 * visit(방문객 수)는 고객 객체를 생성할 때 마다 +1하여 저장
+	 * 
+	 * 현재 이용 고객과 방문객 수 그리고 매출을 출력
+	 *
+	 * */
 
 	public static void getHotelInfo(ArrayList<Guest> arr, ArrayList<ReservationDay> arr2, DecimalFormat format,
 			int hotelmoney, int visit) {
